@@ -4,11 +4,23 @@ import styled from "styled-components";
 const InfoBox = ({ movie, closeInfoPopup }) => {
   return (
     <Wrapper className="info-box">
-      <h2>{movie?.title}</h2>
-      <p>{movie?.overview}</p>
-
-      <div>
+      <div className="movie-info-container">
         <AiOutlineClose onClick={() => closeInfoPopup()} />
+
+        <div className="movie-data">
+          <img
+            src={`https://image.tmdb.org/t/p/w500${movie?.poster_path}`}
+            alt={movie?.title}
+          />
+
+          <div>
+            <h2>{movie?.title}</h2>
+            <span>
+              {movie?.release_date} | {movie?.vote_average} / 10
+            </span>
+            <p>{movie?.overview}</p>
+          </div>
+        </div>
       </div>
     </Wrapper>
   );
@@ -32,12 +44,37 @@ const Wrapper = styled.div`
   height: 100%;
   width: 100%;
 
-  div {
+  .movie-info-container {
     margin: 1rem 0;
     background-color: black;
     color: white;
     padding: 1rem;
     border-radius: 1rem;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    position: relative;
+    width: 50%;
+
+    svg {
+      font-size: 1.5rem;
+      cursor: pointer;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .movie-data {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      margin-top: 1rem;
+
+      img {
+        width: 200px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 1rem;
+        margin-right: 1rem;
+      }
+    }
   }
 `;

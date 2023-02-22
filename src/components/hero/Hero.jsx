@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Rating from "../rating/Rating";
 import { getPopular } from "../../utils/getData";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 
-const Hero = () => {
+const Hero = ({ showInfo }) => {
   const [hero, setHero] = useState(null);
 
   useEffect(() => {
@@ -27,7 +26,6 @@ const Hero = () => {
       <div className="overlay">
         <div className="text-container">
           <h1>{hero?.title}</h1>
-          {/* <Rating rating={hero?.vote_average}/> */}
           <p>{hero?.overview}</p>
 
           <button>

@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import "@splidejs/react-splide/css";
-import { getTvShows } from "../../utils/getData";
 import styled from "styled-components";
+import Rating from "../rating/Rating";
 const IMAGE_PATH = "https://image.tmdb.org/t/p/w342";
 
-const TvShows = () => {
-  const [tvShows, setTvShows] = useState(null);
-
-  useEffect(() => {
-    const getTvShowsData = async () => {
-      try {
-        const tvShowsData = await getTvShows();
-        setTvShows(tvShowsData.results);
-        console.log("tvshows", tvShowsData.results);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getTvShowsData();
-  }, []);
-
+const TvShows = ({ tvShows, handleSlideClick }) => {
   return (
     <TvShowsContainer>
       <h2>Tv Shows</h2>
@@ -46,7 +30,10 @@ const TvShows = () => {
       >
         {tvShows?.map((tvShow) => {
           return (
-            <SplideSlide key={tvShow.id}>
+            <SplideWithOverlay
+              key={tvShow.id}
+              onClick={() => handleSlideClick(tvShow)}
+            >
               <img
                 style={{
                   objectFit: "cover",
@@ -56,7 +43,14 @@ const TvShows = () => {
                 src={`${IMAGE_PATH}${tvShow.poster_path}`}
                 alt={tvShow.title}
               />
-            </SplideSlide>
+
+              <Overlay>
+                <OverlayTitle>{tvShow.title}</OverlayTitle>
+                <OverlayStats>
+                  <Rating rating={tvShow.vote_average} />
+                </OverlayStats>
+              </Overlay>
+            </SplideWithOverlay>
           );
         })}
       </Splide>
@@ -71,5 +65,37 @@ const TvShowsContainer = styled.section`
 
   h2 {
     color: white;
+  }
+`;
+
+const Overlay = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+`;
+
+const OverlayTitle = styled.h3`
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+`;
+
+const OverlayStats = styled.div``;
+
+const SplideWithOverlay = styled(SplideSlide)`
+  position: relative;
+
+  &:hover ${Overlay} {
+    opacity: 1;
   }
 `;
