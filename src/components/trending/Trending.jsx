@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Splide, SplideSlide } from "@splidejs/react-splide";
 import Rating from "../rating/Rating";
 import "@splidejs/react-splide/css";
